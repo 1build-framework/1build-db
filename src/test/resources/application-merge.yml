@@ -1,0 +1,18 @@
+onebuild:
+  db:
+    source-path: /merge/statements
+    db-info:
+      data-source: common
+      schema: auth
+    domains:
+      applications:
+        db-info:
+          table: applications
+          id: id
+        actions:
+          create:
+            type: default
+          update:
+            type: custom
+            info:
+              statement: "update.sql"

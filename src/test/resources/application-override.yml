@@ -1,0 +1,22 @@
+onebuild:
+  db:
+    source-path: /override/statements
+    db-info:
+      data-source: common
+      schema: auth
+    domains:
+      applications:
+        db-info:
+          data-source: auth
+          table: applications
+          id: id
+        actions:
+          create:
+            type: default
+          update:
+            type: custom
+            info:
+              data-source: authorizations
+              schema: entitlement
+              table: auth-apps
+              statement: "update_apps.sql"
