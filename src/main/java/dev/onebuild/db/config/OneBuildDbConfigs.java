@@ -1,8 +1,9 @@
 package dev.onebuild.db.config;
 
-import dev.onebuild.db.domain.model.ActionConfig;
-import dev.onebuild.db.domain.model.DomainConfig;
-import dev.onebuild.db.domain.model.DbInfoConfig;
+import dev.onebuild.db.domain.model.config.ActionInfo;
+import dev.onebuild.db.domain.model.config.ActionType;
+import dev.onebuild.db.domain.model.config.DatabaseInfo;
+import dev.onebuild.db.domain.model.config.DomainInfo;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,21 +19,25 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties(prefix = "onebuild.db")
 public class OneBuildDbConfigs {
+
   private String sourcePath;
-  private DbInfoConfig dbInfo;
-  private Map<String, DomainConfig> domains;
+  private Map<String, String> defaultStatements;
+  private DatabaseInfo dbInfo;
+  private Map<String, DomainInfo> domains;
 
   @PostConstruct
   public void postProcess() {
-    for (Map.Entry<String, DomainConfig> domainEntry : domains.entrySet()) {
-      DomainConfig domainConfig = domainEntry.getValue();
+    for (Map.Entry<String, DomainInfo> domainEntry : domains.entrySet()) {
+      DomainInfo domainInfo = domainEntry.getValue();
 
-      for(Map.Entry<String, ActionConfig> actionEntry : domainConfig.getActions().entrySet()) {
-        DbInfoConfig domainDbInfo = domainConfig.getDbInfo();
-        if(actionEntry.getValue().getInfo() == null) {
-          actionEntry.getValue().setInfo(new DbInfoConfig());
+      for(Map.Entry<String, ActionInfo> actionEntry : domainInfo.getActions().entrySet()) {
+
+        DatabaseInfo domainDbInfo = domainInfo.getDbInfo();
+        if(actionEntry.getValue().getDbInfo() == null) {
+          actionEntry.getValue().setDbInfo(new DatabaseInfo());
         }
-        DbInfoConfig actionDbInfo = actionEntry.getValue().getInfo();
+
+        DatabaseInfo actionDbInfo = actionEntry.getValue().getDbInfo();
 
         //datasource
         if (actionDbInfo.getDataSource() == null) {
@@ -42,22 +47,36 @@ public class OneBuildDbConfigs {
             actionDbInfo.setDataSource(domainDbInfo.getDataSource());
           }
         }
+
         //schema
         if (actionDbInfo.getSchema() == null) {
-          if(domainDbInfo.getSchema() == null) {
+          if (domainDbInfo.getSchema() == null) {
             actionDbInfo.setSchema(dbInfo.getSchema());
           } else {
             actionDbInfo.setSchema(domainDbInfo.getSchema());
           }
         }
+
         //table
         if (actionDbInfo.getTable() == null) {
           actionDbInfo.setTable(domainDbInfo.getTable());
         }
+
         //id
         if (actionDbInfo.getId() == null) {
           actionDbInfo.setId(domainDbInfo.getId());
         }
+
+        //statement
+        if (actionDbInfo.getStatement() == null &&
+            defaultStatements != null &&
+            defaultStatements.containsKey(actionEntry.getKey())) {
+          String statement = defaultStatements.get(actionEntry.getKey());
+          actionDbInfo.setStatement(statement);
+        }
+
+        //action type
+        actionDbInfo.setActionType(ActionType.fromValue(actionEntry.getValue().getActionType()));
       }
     }
   }

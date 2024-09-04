@@ -1,4 +1,4 @@
-package dev.onebuild.db.domain.model;
+package dev.onebuild.db.domain.model.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DomainConfig {
-  private DbInfoConfig dbInfo;
-  private Map<String, ActionConfig> actions = new HashMap<>();
+public class DomainInfo {
+  private DatabaseInfo dbInfo;
+  private Map<String, ActionInfo> actions = new HashMap<>();
 }

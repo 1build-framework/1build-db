@@ -10,9 +10,9 @@ onebuild:
           table: applications
           id: id
         actions:
-          create:
-            type: default
+          insert:
+            action-type: default
           update:
-            type: custom
-            info:
-              statement: "update.sql"
+            action-type: custom
+            db-info:
+              statement: "update-apps.sql"

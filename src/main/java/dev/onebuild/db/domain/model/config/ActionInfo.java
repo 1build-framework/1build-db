@@ -1,4 +1,4 @@
-package dev.onebuild.db.domain.model;
+package dev.onebuild.db.domain.model.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActionConfig {
-  private String type;
-  private DbInfoConfig info;
+public class ActionInfo {
+  private String actionType;
+  private DatabaseInfo dbInfo;
 }

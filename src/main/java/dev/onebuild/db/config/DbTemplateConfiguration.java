@@ -14,7 +14,6 @@ import java.util.List;
 @Slf4j
 @Configuration
 public class DbTemplateConfiguration {
-
   @Bean("dbTemplateLoaders")
   public List<TemplateLoader> dbTemplateLoaders(OneBuildDbConfigs oneBuildDbConfigs) {
     var templateLoaders = new ArrayList<TemplateLoader>();
