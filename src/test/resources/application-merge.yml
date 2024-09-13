@@ -1,6 +1,6 @@
 onebuild:
   db:
-    source-path: /merge/statements
+    source-path: /app/db/templates
     db-info:
       data-source: common
       schema: auth
@@ -10,9 +10,9 @@ onebuild:
           table: applications
           id: id
         actions:
-          insert:
+          - name: INSERT_ONE
             action-type: default
-          update:
+          - name: UPDATE_BY_ID
             action-type: custom
             db-info:
               statement: "update-apps.sql"

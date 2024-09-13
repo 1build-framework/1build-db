@@ -59,6 +59,4 @@ public class DatabaseConfiguration {
       Map<String, NamedParameterJdbcTemplate> testJdbcTemplates) {
     return new OneBuildDataJdbcRepository(oneBuildDataRepositoryHelper, testJdbcTemplates);
   }
-
-
 }

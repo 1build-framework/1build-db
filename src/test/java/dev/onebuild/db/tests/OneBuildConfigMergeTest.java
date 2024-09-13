@@ -25,7 +25,8 @@ public class OneBuildConfigMergeTest {
   @Test
   public void whenConfigsAreNotOverriden_itPopulatesFromParent() {
     assertNotNull(oneBuildDbConfigs);
-    assertEquals("/merge/statements", oneBuildDbConfigs.getSourcePath());
+    assertEquals("/internal/db/templates", oneBuildDbConfigs.getDefaultSourcePath());
+    assertEquals("/app/db/templates", oneBuildDbConfigs.getSourcePath());
     //Root db info test
     DatabaseInfo rootDbInfo = oneBuildDbConfigs.getDbInfo();
     assertNotNull(rootDbInfo);
@@ -36,11 +37,11 @@ public class OneBuildConfigMergeTest {
     validateDbInfo(null, null, "applications", "id", null, null, appDomain.getDbInfo());
 
     //Action db info test
-    ActionInfo createAction = appDomain.getActions().get("insert");
-    validateDbInfo("common", "auth", "applications", "id", "insert.sql", "default", createAction.getDbInfo());
+    ActionInfo createAction = appDomain.findAction("INSERT_ONE");
+    validateDbInfo("common", "auth", "applications", "id", "insert-one.sql.ftl", "default", createAction.getDbInfo());
 
     //Action db info test
-    ActionInfo updateAction = appDomain.getActions().get("update");
+    ActionInfo updateAction = appDomain.findAction("UPDATE_BY_ID");
     validateDbInfo("common", "auth", "applications", "id", "update-apps.sql", "custom", updateAction.getDbInfo());
   }
 }

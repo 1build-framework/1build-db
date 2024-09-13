@@ -1,5 +1,6 @@
 onebuild:
   db:
+    source-path: /app/db/templates
     db-info:
       data-source: common
       schema: auth
@@ -10,15 +11,15 @@ onebuild:
           table: applications
           id: id
         actions:
-          insert:
+          - name: INSERT_ONE
             action-type: default
-          find-by-id:
+          - name: FIND_BY_ID
             action-type: default
-          find-all:
+          - name: FIND_ALL
             action-type: default
-          delete-by-id:
+          - name: DELETE_BY_ID
             action-type: default
-          update:
+          - name: UPDATE_BY_ID
             action-type: custom
             db-info:
               data-source: authorizations

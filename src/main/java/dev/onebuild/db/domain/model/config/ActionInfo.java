@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ActionInfo {
+  private String name;
   private String actionType;
   private DatabaseInfo dbInfo;
 }

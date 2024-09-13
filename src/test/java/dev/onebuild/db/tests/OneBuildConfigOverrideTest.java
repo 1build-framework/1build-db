@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static dev.onebuild.db.tests.utils.TestUtils.validateDbInfo;
-import static dev.onebuild.db.tests.utils.TestUtils.validateDefaultStatements;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -28,9 +27,8 @@ public class OneBuildConfigOverrideTest {
   public void whenConfigsAreNotOverriden_itPopulatesFromParent() {
     assertNotNull(oneBuildDbConfigs);
 
-    validateDefaultStatements(oneBuildDbConfigs.getDefaultStatements());
-
-    assertEquals("/internal/db/templates", oneBuildDbConfigs.getSourcePath());
+    assertEquals("/internal/db/templates", oneBuildDbConfigs.getDefaultSourcePath());
+    assertEquals("/app/db/templates", oneBuildDbConfigs.getSourcePath());
 
     //Root Level db info test
     DatabaseInfo rootDbInfo = oneBuildDbConfigs.getDbInfo();
@@ -42,12 +40,12 @@ public class OneBuildConfigOverrideTest {
     validateDbInfo("auth", null, "applications", "id", null, null, appDomain.getDbInfo());
 
     //Action Level db info test
-    ActionInfo createAction = appDomain.getActions().get("insert");
-    validateDbInfo("auth", "auth", "applications", "id", "insert.sql", "default", createAction.getDbInfo());
+    ActionInfo createAction = appDomain.findAction("INSERT_ONE");
+    validateDbInfo("auth", "auth", "applications", "id", "insert-one.sql.ftl", "default", createAction.getDbInfo());
     assertNotNull(createAction.getDbInfo().getStatement());
 
     //Action db info test
-    ActionInfo updateAction = appDomain.getActions().get("update");
+    ActionInfo updateAction = appDomain.findAction("UPDATE_BY_ID");
     validateDbInfo("authorizations", "entitlement", "auth-apps", "id", "update_apps.sql", "custom", updateAction.getDbInfo());
     assertNotNull(updateAction.getDbInfo().getStatement());
   }

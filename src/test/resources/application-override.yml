@@ -1,12 +1,6 @@
 onebuild:
   db:
-    source-path: /internal/db/templates
-    default-statements:
-      find-by-id: find-by-id.sql
-      find-all: find-all.sql
-      insert: insert.sql
-      update: update.sql
-      delete-by-id: delete.sql
+    source-path: /app/db/templates
     db-info:
       data-source: common
       schema: auth
@@ -17,9 +11,9 @@ onebuild:
           table: applications
           id: id
         actions:
-          insert:
+          - name: INSERT_ONE
             action-type: default
-          update:
+          - name: UPDATE_BY_ID
             action-type: custom
             db-info:
               data-source: authorizations

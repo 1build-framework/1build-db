@@ -1,9 +1,3 @@
 onebuild:
   db:
-    source-path: /internal/db/templates
-    default-statements:
-      find-by-id: find-by-id.sql
-      find-all: find-all.sql
-      insert: insert.sql
-      update: update.sql
-      delete-by-id: delete-by-id.sql
+    default-source-path: /internal/db/templates

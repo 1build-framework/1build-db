@@ -24,24 +24,4 @@ public class TestUtils {
       assertEquals(actionType, dbInfo.getActionType().toString());
     }
   }
-
-  public static void validateDefaultStatements(Map<String, String> statements) {
-    assertNotNull(statements);
-    assertEquals(5, statements.size());
-
-    assertTrue(statements.containsKey(DefaultStatement.FIND_BY_ID.getValue()));
-    assertNotNull(statements.get(DefaultStatement.FIND_BY_ID.getValue()));
-
-    assertTrue(statements.containsKey(DefaultStatement.FIND_ALL.getValue()));
-    assertNotNull(statements.get(DefaultStatement.FIND_ALL.getValue()));
-
-    assertTrue(statements.containsKey(DefaultStatement.INSERT.getValue()));
-    assertNotNull(statements.get(DefaultStatement.INSERT.getValue()));
-
-    assertTrue(statements.containsKey(DefaultStatement.UPDATE.getValue()));
-    assertNotNull(statements.get(DefaultStatement.UPDATE.getValue()));
-
-    assertTrue(statements.containsKey(DefaultStatement.DELETE.getValue()));
-    assertNotNull(statements.get(DefaultStatement.DELETE.getValue()));
-  }
 }

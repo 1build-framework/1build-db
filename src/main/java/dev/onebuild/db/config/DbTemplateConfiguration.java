@@ -12,15 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+//@ConditionalOnProperty(prefix = "onebuild.db")
 @Configuration
 public class DbTemplateConfiguration {
   @Bean("dbTemplateLoaders")
   public List<TemplateLoader> dbTemplateLoaders(OneBuildDbConfigs oneBuildDbConfigs) {
     var templateLoaders = new ArrayList<TemplateLoader>();
 
-    //Database Classpath
-    templateLoaders.add(new ClassTemplateLoader(this.getClass(), oneBuildDbConfigs.getSourcePath()));
-    log.info("Database Template Source Path: {}", oneBuildDbConfigs.getSourcePath());
+    //default template classpath
+    if(oneBuildDbConfigs.getDefaultSourcePath() != null) {
+      templateLoaders.add(new ClassTemplateLoader(this.getClass(), oneBuildDbConfigs.getDefaultSourcePath()));
+      log.info("Default Database Template Source Path: {}", oneBuildDbConfigs.getDefaultSourcePath());
+    }
+
+    //app template classpath
+    if(oneBuildDbConfigs.getSourcePath() != null) {
+      templateLoaders.add(new ClassTemplateLoader(this.getClass(), oneBuildDbConfigs.getSourcePath()));
+      log.info("Database Template Source Path: {}", oneBuildDbConfigs.getSourcePath());
+    }
 
     return templateLoaders;
   }

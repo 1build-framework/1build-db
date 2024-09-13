@@ -1,29 +1,37 @@
 package dev.onebuild.db.domain.model.sql;
 
-public enum DefaultStatement {
-  FIND_BY_ID("find-by-id"),
-  FIND_ALL("find-all"),
-  INSERT("insert"),
-  UPDATE("update"),
-  DELETE("delete-by-id");
+import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+@Getter
+public enum DefaultStatement {
+  FIND_BY_ID("FIND_BY_ID", "find-by-id.sql.ftl"),
+  FIND_ALL("FIND_ALL", "find-all.sql.ftl"),
+  INSERT_ONE("INSERT_ONE", "insert-one.sql.ftl"),
+  UPDATE_BY_ID("UPDATE_BY_ID", "update-by-id.sql.ftl"),
+  DELETE_BY_ID("DELETE_BY_ID", "delete-by-id.sql.ftl");
+
+  private final String name;
   private final String value;
 
-  DefaultStatement(String value) {
+  DefaultStatement(String name, String value) {
+    this.name = name;
     this.value = value;
   }
 
-  public String getValue() {
-    return value;
-  }
-
-  public static DefaultStatement fromValue(String value) {
+  public static DefaultStatement fromName(String name) {
     for (DefaultStatement statement : DefaultStatement.values()) {
-      if (statement.value.equals(value)) {
+      if (statement.name.equals(name)) {
         return statement;
       }
     }
-    throw new IllegalArgumentException("Unknown value: " + value);
+    return null;
+  }
+
+  public static String listAllNames() {
+    return Arrays.stream(DefaultStatement.values()).map(DefaultStatement::getName).collect(Collectors.joining(", "));
   }
 
   @Override

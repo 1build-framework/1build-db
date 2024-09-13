@@ -1,5 +1,6 @@
 package dev.onebuild.db.tests.domain.repository;
 
+import dev.onebuild.db.config.DbAutoConfiguration;
 import dev.onebuild.db.config.DbTemplateConfiguration;
 import dev.onebuild.db.config.OneBuildDbConfigs;
 import dev.onebuild.db.domain.model.config.DatabaseInfo;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest(classes = {
+    DbAutoConfiguration.class,
     DatabaseConfiguration.class,
     DbTemplateConfiguration.class})
-@EnableConfigurationProperties(OneBuildDbConfigs.class)
 @ActiveProfiles("test")
 @Transactional
 public class OneBuildDataJdbcRepositoryIntegrationTest {
@@ -46,12 +46,12 @@ public class OneBuildDataJdbcRepositoryIntegrationTest {
     record.add("application_code", "APP002");
     record.add("application_name", "Test Application");
 
-    DatabaseInfo databaseInfo = this.dbInfo.getDomains().get("applications").getActions().get("insert").getDbInfo();
+    DatabaseInfo databaseInfo = this.dbInfo.getDomains().get("applications").findAction("INSERT_ONE").getDbInfo();
     // When
     repository.save(databaseInfo, record);
     assertNotNull(record.getId());
 
-    DatabaseInfo findById = this.dbInfo.getDomains().get("applications").getActions().get("find-by-id").getDbInfo();
+    DatabaseInfo findById = this.dbInfo.getDomains().get("applications").findAction("FIND_BY_ID").getDbInfo();
     OneBuildRecord r = repository.findById(findById, record.getId());
     assertNotNull(r);
     assertEquals(record.getId(), r.getId());
@@ -67,12 +67,12 @@ public class OneBuildDataJdbcRepositoryIntegrationTest {
     record.add("application_code", "APP002");
     record.add("application_name", "Test Application");
 
-    DatabaseInfo databaseInfo = this.dbInfo.getDomains().get("applications").getActions().get("insert").getDbInfo();
+    DatabaseInfo databaseInfo = this.dbInfo.getDomains().get("applications").findAction("INSERT_ONE").getDbInfo();
     // When
     repository.save(databaseInfo, record);
     assertNotNull(record.getId());
 
-    DatabaseInfo findById = this.dbInfo.getDomains().get("applications").getActions().get("find-by-id").getDbInfo();
+    DatabaseInfo findById = this.dbInfo.getDomains().get("applications").findAction("FIND_BY_ID").getDbInfo();
     OneBuildRecord r = repository.findById(findById, record.getId());
     assertNotNull(r);
     assertEquals(record.getId(), r.getId());
@@ -80,7 +80,7 @@ public class OneBuildDataJdbcRepositoryIntegrationTest {
     assertEquals("Test Application", r.get("application_name"));
 
     record.add("application_name", "Updated Name");
-    DatabaseInfo updateInfo = this.dbInfo.getDomains().get("applications").getActions().get("update").getDbInfo();
+    DatabaseInfo updateInfo = this.dbInfo.getDomains().get("applications").findAction("UPDATE_BY_ID").getDbInfo();
     repository.save(updateInfo, record);
 
     //Test the updated data
@@ -99,19 +99,19 @@ public class OneBuildDataJdbcRepositoryIntegrationTest {
     record.add("application_code", "APP002");
     record.add("application_name", "Test Application");
 
-    DatabaseInfo databaseInfo = this.dbInfo.getDomains().get("applications").getActions().get("insert").getDbInfo();
+    DatabaseInfo databaseInfo = this.dbInfo.getDomains().get("applications").findAction("INSERT_ONE").getDbInfo();
     // When
     repository.save(databaseInfo, record);
     assertNotNull(record.getId());
 
-    DatabaseInfo findById = this.dbInfo.getDomains().get("applications").getActions().get("find-by-id").getDbInfo();
+    DatabaseInfo findById = this.dbInfo.getDomains().get("applications").findAction("FIND_BY_ID").getDbInfo();
     OneBuildRecord r = repository.findById(findById, record.getId());
     assertNotNull(r);
     assertEquals(record.getId(), r.getId());
     assertEquals("APP002", r.get("application_code"));
     assertEquals("Test Application", r.get("application_name"));
 
-    DatabaseInfo deleteById = this.dbInfo.getDomains().get("applications").getActions().get("delete-by-id").getDbInfo();
+    DatabaseInfo deleteById = this.dbInfo.getDomains().get("applications").findAction("DELETE_BY_ID").getDbInfo();
     repository.deleteById(deleteById, record.getId());
 
     OneBuildRecord r2 = repository.findById(findById, record.getId());
@@ -123,7 +123,7 @@ public class OneBuildDataJdbcRepositoryIntegrationTest {
   public void testFindAllData() {
     List<OneBuildRecord> records = new ArrayList<>();
 
-    DatabaseInfo databaseInfo = this.dbInfo.getDomains().get("applications").getActions().get("insert").getDbInfo();
+    DatabaseInfo databaseInfo = this.dbInfo.getDomains().get("applications").findAction("INSERT_ONE").getDbInfo();
 
     OneBuildRecord record = new DefaultOneBuildRecord()
         .add("application_code", "APP002")
@@ -146,7 +146,7 @@ public class OneBuildDataJdbcRepositoryIntegrationTest {
     repository.save(databaseInfo, record);
     assertNotNull(record.getId());
 
-    DatabaseInfo findAllInfo = this.dbInfo.getDomains().get("applications").getActions().get("find-all").getDbInfo();
+    DatabaseInfo findAllInfo = this.dbInfo.getDomains().get("applications").findAction("FIND_ALL").getDbInfo();
     List<OneBuildRecord> newRecords = repository.findAll(findAllInfo);
     assertNotNull(records);
     assertEquals(3, records.size());
