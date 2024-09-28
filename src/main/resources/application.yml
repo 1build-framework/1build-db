@@ -1,3 +1,0 @@
-onebuild:
-  db:
-    default-source-path: /internal/db/templates

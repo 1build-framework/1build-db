@@ -1,2 +1,1 @@
-dev.onebuild.db.config.DbAutoConfiguration
-dev.onebuild.db.config.DbTemplateConfiguration
+dev.onebuild.db.config.OneBuildDatabaseConfiguration

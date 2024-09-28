@@ -1,10 +1,12 @@
 package dev.onebuild.db.persistence;
 
-import dev.onebuild.db.domain.model.config.DatabaseInfo;
-import dev.onebuild.db.domain.model.sql.DefaultOneBuildRecord;
-import dev.onebuild.db.domain.model.types.OneBuildRecord;
-import dev.onebuild.db.domain.repository.OneBuildDataRepository;
+import dev.onebuild.domain.model.db.DatabaseAction;
+import dev.onebuild.domain.model.db.DatabaseInfo;
+import dev.onebuild.domain.model.db.DefaultOneBuildRecord;
+import dev.onebuild.domain.model.db.OneBuildRecord;
+import dev.onebuild.domain.repository.OneBuildDataRepository;
 import dev.onebuild.db.utils.OneBuildDataRepositoryHelper;
+import io.micrometer.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -34,6 +36,14 @@ public class OneBuildDataJdbcRepository implements OneBuildDataRepository {
   public void save(DatabaseInfo database, OneBuildRecord record) {
     var jdbcTemplate = jdbcTemplates.get(database.getDataSource() + "JdbcTemplate");
 
+    if(StringUtils.isBlank(database.getStatement())) {
+      if(record.getId() != null) {
+        database.setStatement(DatabaseAction.UPDATE_BY_ID.getValue());
+      } else {
+        database.setStatement(DatabaseAction.INSERT_ONE.getValue());
+      }
+    }
+
     if(jdbcTemplate != null) {
       String sql = oneBuildDataRepositoryHelper.getSql(database, record);
       SqlParameterSource parameters = record.getSqlParameterSource();
@@ -50,6 +60,10 @@ public class OneBuildDataJdbcRepository implements OneBuildDataRepository {
   @Override
   public OneBuildRecord findById(DatabaseInfo database, Object id) {
     var jdbcTemplate = jdbcTemplates.get(database.getDataSource() + "JdbcTemplate");
+
+    if(StringUtils.isBlank(database.getStatement())) {
+      database.setStatement(DatabaseAction.FIND_BY_ID.getValue());
+    }
 
     if(jdbcTemplate != null) {
       String sql = oneBuildDataRepositoryHelper.getSql(database);
@@ -73,6 +87,10 @@ public class OneBuildDataJdbcRepository implements OneBuildDataRepository {
   public List<OneBuildRecord> findAll(DatabaseInfo database) {
     var jdbcTemplate = jdbcTemplates.get(database.getDataSource() + "JdbcTemplate");
 
+    if(StringUtils.isBlank(database.getStatement())) {
+      database.setStatement(DatabaseAction.FIND_ALL.getValue());
+    }
+
     if(jdbcTemplate != null) {
       String sql = oneBuildDataRepositoryHelper.getSql(database);
       try {
@@ -93,6 +111,10 @@ public class OneBuildDataJdbcRepository implements OneBuildDataRepository {
   @Override
   public void deleteById(DatabaseInfo database, Object id) {
     var jdbcTemplate = jdbcTemplates.get(database.getDataSource() + "JdbcTemplate");
+
+    if(StringUtils.isBlank(database.getStatement())) {
+      database.setStatement(DatabaseAction.DELETE_BY_ID.getValue());
+    }
 
     if(jdbcTemplate != null) {
       String sql = oneBuildDataRepositoryHelper.getSql(database);

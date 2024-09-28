@@ -1,18 +1,13 @@
 package dev.onebuild.db.utils;
 
-import dev.onebuild.db.config.OneBuildDbConfigs;
-import dev.onebuild.db.domain.model.config.ActionInfo;
-import dev.onebuild.db.domain.model.config.ActionType;
-import dev.onebuild.db.domain.model.config.DatabaseInfo;
-import dev.onebuild.db.domain.model.config.DomainInfo;
-import dev.onebuild.db.domain.model.sql.DefaultStatement;
+import dev.onebuild.domain.model.db.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
 @Slf4j
 public class AppUtils {
-  public static void processDatabaseConfigs(OneBuildDbConfigs configs) {
+  /*public static void processDatabaseConfigs(OneBuildDbConfigs configs) {
     if(configs.getDomains() == null) {
       return;
     }
@@ -58,14 +53,14 @@ public class AppUtils {
 
         //statement
         if (actionDbInfo.getStatement() == null) {
-          DefaultStatement statement = null;
+          DatabaseAction statement = null;
           try {
-            statement = DefaultStatement.fromName(actionInfo.getName());
+            statement = DatabaseAction.fromName(actionInfo.getName());
           } catch(Exception e) {
             log.error("Error while setting statement for action {}", actionInfo.getName(), e);
           }
           if(statement == null) {
-            throw new RuntimeException(String.format("Action %s not valid. Please select from one of these actions %s ", actionInfo.getName(), DefaultStatement.listAllNames()));
+            throw new RuntimeException(String.format("Action %s not valid. Please select from one of these actions %s ", actionInfo.getName(), DatabaseAction.listAllNames()));
           }
           actionDbInfo.setStatement(statement.getValue());
         }
@@ -73,5 +68,5 @@ public class AppUtils {
         actionDbInfo.setActionType(ActionType.fromValue(actionInfo.getActionType()));
       }
     }
-  }
+  }*/
 }

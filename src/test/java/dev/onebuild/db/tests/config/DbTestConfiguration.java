@@ -1,9 +1,5 @@
 package dev.onebuild.db.tests.config;
 
-import dev.onebuild.db.domain.repository.OneBuildDataRepository;
-import dev.onebuild.db.persistence.OneBuildDataJdbcRepository;
-import dev.onebuild.db.utils.OneBuildDataRepositoryHelper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -13,12 +9,10 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.PlatformTransactionManager;
-
 import javax.sql.DataSource;
-import java.util.Map;
 
 @Configuration
-public class DatabaseConfiguration {
+public class DbTestConfiguration {
 
   @Bean("testDataSource")
   public DataSource dataSource() {
@@ -46,17 +40,5 @@ public class DatabaseConfiguration {
   @Bean("testJdbcTemplate")
   public NamedParameterJdbcTemplate testJdbcTemplate(DataSource dataSource) {
     return new NamedParameterJdbcTemplate(dataSource);
-  }
-
-  @Bean
-  public OneBuildDataRepositoryHelper oneBuildDataRepositoryHelper(@Qualifier("dbFreemarkerConfiguration") freemarker.template.Configuration dbFreemarkerConfiguration) {
-    return new OneBuildDataRepositoryHelper(dbFreemarkerConfiguration);
-  }
-
-  @Bean("oneBuildDataJdbcRepository")
-  public OneBuildDataRepository oneBuildDataJdbcRepository(
-      OneBuildDataRepositoryHelper oneBuildDataRepositoryHelper,
-      Map<String, NamedParameterJdbcTemplate> testJdbcTemplates) {
-    return new OneBuildDataJdbcRepository(oneBuildDataRepositoryHelper, testJdbcTemplates);
   }
 }
