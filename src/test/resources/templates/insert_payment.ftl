@@ -1,0 +1,1 @@
+INSERT INTO payment (id, customer_id, amount) VALUES (:payment_id, :customer_id, :amount)

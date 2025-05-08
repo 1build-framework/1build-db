@@ -1,0 +1,39 @@
+{
+  "name": "update-payment",
+  "type": "update",
+  "source-db": "payment",
+  "statement": "update_payment.ftl",
+  "stop-on-failure": true,
+  "depends-on": [
+    {
+      "name": "update-payment",
+      "type": "update",
+      "source-db": "payment",
+      "statement": "update_payment.ftl",
+      "stop-on-failure": true,
+      "depends_on": [
+        {
+          "name": "update-customer",
+          "type": "update",
+          "source-db": "customer",
+          "statement": "update_customer.ftl",
+          "stop-on-failure": true
+        },
+        {
+          "name": "create-order",
+          "type": "update",
+          "source-db": "order",
+          "statement": "insert_order.ftl",
+          "stop-on-failure": true
+        },
+        {
+          "name": "update-product",
+          "type": "update",
+          "source-db": "product",
+          "statement": "update_product.ftl",
+          "stop-on-failure": true
+        }
+      ]
+    }
+  ]
+}

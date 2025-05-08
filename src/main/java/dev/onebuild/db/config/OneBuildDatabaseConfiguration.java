@@ -6,7 +6,7 @@ import dev.onebuild.db.utils.OneBuildDataRepositoryHelper;
 import dev.onebuild.domain.model.ui.OneBuildEndpoint;
 import dev.onebuild.domain.repository.OneBuildDataRepository;
 import dev.onebuild.domain.service.OneBuildDataService;
-import dev.onebuild.utils.OneBuildExceptionFactory;
+import dev.onebuild.errors.OneBuildExceptionFactory;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-//@ConditionalOnProperty(prefix = "onebuild.db")
 @Configuration
 public class OneBuildDatabaseConfiguration {
   private static final String DEFAULT_TEMPLATE_PATH = "/internal/db/templates";
@@ -57,8 +56,9 @@ public class OneBuildDatabaseConfiguration {
   @Bean("oneBuildDataJdbcRepository")
   public OneBuildDataRepository oneBuildDataJdbcRepository(
       OneBuildDataRepositoryHelper oneBuildDataRepositoryHelper,
-      Map<String, NamedParameterJdbcTemplate> testJdbcTemplates) {
-    return new OneBuildDataJdbcRepository(oneBuildDataRepositoryHelper, testJdbcTemplates);
+      Map<String, NamedParameterJdbcTemplate> testJdbcTemplates,
+      OneBuildExceptionFactory exceptionFactory) {
+    return new OneBuildDataJdbcRepository(oneBuildDataRepositoryHelper, testJdbcTemplates, exceptionFactory);
   }
 
   @Bean("oneBuildDataService")

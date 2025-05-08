@@ -1,0 +1,1 @@
+UPDATE product SET quantity = quantity - :quantity WHERE id = :product_id

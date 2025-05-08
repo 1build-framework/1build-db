@@ -1,0 +1,1 @@
+UPDATE customer SET status = :status WHERE id = :customer_id
