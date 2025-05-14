@@ -1,9 +1,9 @@
 package dev.onebuild.db.exception;
 
+import dev.onebuild.commons.errors.ErrorCode;
+import dev.onebuild.commons.errors.ErrorReason;
+import dev.onebuild.commons.errors.OneBuildException;
 import dev.onebuild.db.domain.model.WorkflowStep;
-import dev.onebuild.errors.ErrorCode;
-import dev.onebuild.errors.ErrorReason;
-import dev.onebuild.errors.OneBuildException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

@@ -1,12 +1,12 @@
 package dev.onebuild.db.domain.service;
 
-import dev.onebuild.domain.model.db.DatabaseInfo;
-import dev.onebuild.domain.model.db.OneBuildRecord;
-import dev.onebuild.domain.model.ui.OneBuildEndpoint;
-import dev.onebuild.domain.model.ui.ResourceType;
-import dev.onebuild.domain.repository.OneBuildDataRepository;
-import dev.onebuild.domain.service.OneBuildDataService;
-import dev.onebuild.errors.OneBuildExceptionFactory;
+import dev.onebuild.commons.domain.model.db.DatabaseInfo;
+import dev.onebuild.commons.domain.model.db.OneBuildRecord;
+import dev.onebuild.commons.domain.model.ui.OneBuildEndpoint;
+import dev.onebuild.commons.domain.model.ui.ResourceType;
+import dev.onebuild.commons.domain.repository.OneBuildDataRepository;
+import dev.onebuild.commons.domain.service.OneBuildDataService;
+import dev.onebuild.commons.errors.OneBuildExceptionFactory;
 
 import java.util.List;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package dev.onebuild.db.utils;
 
-import dev.onebuild.domain.model.db.DatabaseInfo;
-import dev.onebuild.domain.model.db.OneBuildRecord;
+import dev.onebuild.commons.domain.model.db.DatabaseInfo;
+import dev.onebuild.commons.domain.model.db.OneBuildRecord;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.StringWriter;

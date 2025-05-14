@@ -1,12 +1,12 @@
 package dev.onebuild.db.persistence;
 
+import dev.onebuild.commons.domain.model.db.DatabaseAction;
 import dev.onebuild.db.utils.OneBuildDataRepositoryHelper;
-import dev.onebuild.domain.model.db.DatabaseAction;
-import dev.onebuild.domain.model.db.DatabaseInfo;
-import dev.onebuild.domain.model.db.DefaultOneBuildRecord;
-import dev.onebuild.domain.model.db.OneBuildRecord;
-import dev.onebuild.domain.repository.OneBuildDataRepository;
-import dev.onebuild.errors.OneBuildExceptionFactory;
+import dev.onebuild.commons.domain.model.db.DatabaseInfo;
+import dev.onebuild.commons.domain.model.db.DefaultOneBuildRecord;
+import dev.onebuild.commons.domain.model.db.OneBuildRecord;
+import dev.onebuild.commons.domain.repository.OneBuildDataRepository;
+import dev.onebuild.commons.errors.OneBuildExceptionFactory;
 import io.micrometer.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
