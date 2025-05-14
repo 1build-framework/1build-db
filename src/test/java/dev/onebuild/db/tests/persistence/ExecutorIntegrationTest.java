@@ -51,7 +51,7 @@ class ExecutorIntegrationTest {
   @BeforeEach
   void setUp() {
     jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    executor = new WorkflowExecutorImpl(getDbFreemarkerConfiguration(), Map.of("defaultJdbcTemplate", jdbcTemplate), Executors.newFixedThreadPool(4));
+    executor = new WorkflowExecutorImpl(getDbFreemarkerConfiguration(), Map.of("default-jdbc-template", jdbcTemplate), Executors.newFixedThreadPool(4));
   }
 
   @Test

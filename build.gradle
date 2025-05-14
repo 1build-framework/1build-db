@@ -1,11 +1,36 @@
 plugins {
+	id 'java'
 	id 'java-library'
 	id 'maven-publish'
 	id 'org.springframework.boot' version '3.4.4'
 }
 
-group = 'dev.onebuild'
+group = 'dev.onebuild.db'
 version = '0.0.1-SNAPSHOT'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+
+	ivy {
+		name = "s3-repository"
+		url "https://1build-framework.s3.us-east-1.amazonaws.com/releases"
+
+		patternLayout {
+			artifact "[organization]/[module]/[revision]/[module]-[revision].[ext]"
+		}
+
+/*
+		metadataSources {
+			artifact()
+		}
+*/
+
+		content {
+			includeGroupByRegex("dev\\.onebuild\\..*")
+		}
+	}
+}
 
 java {
 	toolchain {
@@ -19,8 +44,17 @@ configurations {
 	}
 }
 
-repositories {
-	mavenCentral()
+configurations.all {
+	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+		def group = details.requested.group
+		def name = details.requested.name
+		def version = details.requested.version
+		def ext = "jar"
+
+		if (group.startsWith("dev.onebuild")) {
+			downloadS3Artifact(group, name, version, ext)
+		}
+	}
 }
 
 jar {
@@ -35,8 +69,8 @@ dependencies {
 	compileOnly("org.projectlombok:lombok:1.18.38")
 	annotationProcessor("org.projectlombok:lombok:1.18.38")
 
-	api 'dev.onebuild:1build-commons:0.0.1-SNAPSHOT'
-
+	api 'dev.onebuild.commons:1build-commons:2025-05-14.22@jar'
+	
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:3.4.4'
 	implementation 'org.springframework.boot:spring-boot-starter-freemarker:3.4.4'
 
@@ -53,6 +87,45 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.4'
 }
 
+/*
+tasks.named('compileJava') {
+	dependsOn downloadArtifact
+}
+*/
+
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+
+def downloadS3Artifact(String group, String name, String version, String ext) {
+	def cacheDir = file("${rootProject.gradle.gradleUserHomeDir}/caches/modules-2/files-2.1")
+	def artifactDir = new File(cacheDir, "${group}/${name}/${version}")
+	def artifactFile = new File(artifactDir, "${name}-${version}.${ext}")
+
+	if (artifactFile.exists()) {
+		println "Artifact already exists: ${artifactFile}"
+		return artifactFile
+	}
+
+	artifactDir.mkdirs()
+
+	def baseUrl = "https://1build-framework.s3.us-east-1.amazonaws.com/releases"
+	def artifactUrl = "${baseUrl}/${group.replace('.', '/')}/${name}/${version}/${name}-${version}.${ext}"
+	println "Downloading ${artifactUrl} to ${artifactFile}"
+
+	try {
+		new URL(artifactUrl).withInputStream { input ->
+			artifactFile.withOutputStream { output ->
+				output << input
+			}
+		}
+
+		println "Downloaded: ${artifactFile}"
+
+	} catch (Exception e) {
+		println "Error downloading ${artifactUrl}: ${e.message}"
+	}
+
+	return artifactFile
 }
