@@ -1,0 +1,32 @@
+name: 1build-db builder
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x gradlew
+
+      - name: Build and Publish Project
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ONEBUILD_AWS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ONEBUILD_AWS_SECRET }}
+        run: ./gradlew clean build publish -Paws_access_key="$AWS_ACCESS_KEY_ID" -Paws_secret_key="$AWS_SECRET_ACCESS_KEY"
