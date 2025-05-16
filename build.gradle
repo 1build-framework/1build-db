@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		awsAccessKey = findProperty("aws_access_key") ?: System.getenv("ONEBUILD_AWS_KEY")
-		awsSecretKey = findProperty("aws_secret_key") ?: System.getenv("ONEBUILD_AWS_SECRET")
+		awsAccessKey = findProperty("aws_access_key") ?: System.getenv("AWS_KEY")
+		awsSecretKey = findProperty("aws_secret_key") ?: System.getenv("AWS_SECRET")
 	}
 }
 

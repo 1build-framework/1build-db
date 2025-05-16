@@ -27,6 +27,6 @@ jobs:
 
       - name: Build and Publish Project
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.ONEBUILD_AWS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.ONEBUILD_AWS_SECRET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
         run: ./gradlew clean build publish -Paws_access_key="$AWS_ACCESS_KEY_ID" -Paws_secret_key="$AWS_SECRET_ACCESS_KEY"
