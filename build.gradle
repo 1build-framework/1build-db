@@ -30,13 +30,12 @@ java {
 repositories {
 	mavenLocal()
 	mavenCentral()
-	repositories {
-		maven {
-			url = "s3://1build-framework/releases"
-			credentials(AwsCredentials) {
-				accessKey = awsAccessKey
-				secretKey = awsSecretKey
-			}
+
+	maven {
+		url = "s3://1build-framework/releases"
+		credentials(AwsCredentials) {
+			accessKey = awsAccessKey
+			secretKey = awsSecretKey
 		}
 	}
 }
@@ -55,7 +54,6 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-
 
 dependencies {
 	compileOnly("org.projectlombok:lombok:1.18.38")
