@@ -83,7 +83,7 @@ public class WorkflowExecutorImpl extends AbstractWorkflowExecutor {
         result.set(step.getName(), update);
         parameters.put(step.getName(), update);
 
-      //Projection
+      //Projection or select
       } else {
         List<OneBuildRecord> records = jdbcTemplate.query(
             sql,
